@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #0f1115;
+    color: #fff;
+}
+
+
+.top-nav {
+    padding: 15px 40px;
+    background: #1e88e5;
+    display: flex;
+    top: center;
+    flex-direction: row;
+}
+
+.top-nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.top-nav span {
+    color: #555;
+}
+
+
+.container {
+    padding: 40px;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+
+.content {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 30px;
+}
+
+
+.car-card {
+    background: #1a1d24;
+    border-radius: 10px;
+    padding: 20px;
+    
+}
+
+.car-card img {
+    width: 100%;
+    border-radius: 10px;
+    height: 50%;
+
+}
+
+
+.booking-card {
+    background: #1a1d24;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.booking-card h2 {
+    margin-bottom: 20px;
+}
+
+.booking-card h2 span {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.booking-card label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+.booking-card input,
+.booking-card select,
+.booking-card textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    background: #0f1115;
+    color: #fff;
+}
+
+.booking-card textarea {
+    resize: none;
+}
+
+
+.total {
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+
+.booking-card button {
+    width: 100%;
+    padding: 12px;
+    background: #1e88e5;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.booking-card button:hover {
+    background: #1565c0;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent Mercedes Benz</title>
+    <link rel="stylesheet" href="rent.css">
+</head>
+<body>
+
+    
+    <header class="top-nav">
+        <a href="#">Home</a>
+        <p>|</p>
+        <a href="#">Listings</a>
+        <p>|</p>
+        <a href="#">Cars</a>
+    </header>
+
+    <main class="container">
+
+        <h1><span>Rent</span>ify</h1>
+
+        <div class="content">
+
+            
+            <div class="car-card">
+                <img src="https://blueprint10.s3.amazonaws.com/KTiqAfxqoHaSgE%2BzKW8374JR6L0yVU5heLFP4a4G/CDy2BvBgoiXPo024/Vm3pWg%3D%3D/NwiO/header.jpg" alt="car">
+            </div>
+
+            
+            <div class="booking-card">
+                <h2>GMD 2,500 <span>PER DAY</span></h2>
+
+                <label>Pickup date</label>
+                <input type="date">
+
+                <label>Return date</label>
+                <input type="date">
+
+                <label>Pickup time</label>
+                <input type="time">
+
+                <label>Pickup location</label>
+                <select>
+                    <option>Banjul</option>
+                    <option>Serrekunda</option>
+                    <option>Brikama</option>
+                </select>
+
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your full name">
+
+                <label>Phone Number</label>
+                <input type="text" pattern="[0-9]{3}-[0-9]{4}" placeholder="123-7890">
+
+                <label>Email Address</label>
+                <input type="email" placeholder="name@email.com">
+
+                <label>Comments</label>
+                <textarea rows="3">Please have the car filled with fuel.</textarea>
+
+                <div class="total">
+                    Total Cost: <strong>GMD 2,500</strong>
+                </div>
+
+                <button>Confirm Booking</button>
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
