@@ -17,22 +17,35 @@ body {
 }
 
 .top-nav h2 {
-    color: #f7b500;
+    color: red;
     letter-spacing: 2px;
 }
 
 
 .about-container {
-    padding: 60px 40px;
-    position: relative;
+   display: grid;
+   grid-template-columns: 1fr ;
+   grid-template-rows: 50%;
+   gap: 10px;
 }
 
 .about-card {
-    max-width: 600px;
+    grid-area: "about-card img" "about-card p";
+    max-width: 100%;
     margin-bottom: 50px;
 }
 .about-card img {
-    width: 100%;
+    width: 50%;
+    height: 15rem;
+    object-fit: cover;
+        border-radius: 20px;  
+}
+.about-card p{
+    text-align: center;
+    color:red;
+    width: 50%;
+
+
     
 }
 
@@ -68,7 +81,7 @@ body {
 }
 
 .info-box h3 {
-    color: #f7b500;
+    color:red;
     margin-bottom: 10px;
 }
 
@@ -77,7 +90,7 @@ body {
     font-size: 14px;
 }
 
-/* Mission Section */
+
 .mission {
     background: #262626;
     padding: 30px;
@@ -85,7 +98,7 @@ body {
 }
 
 .mission h2 {
-    color: #f7b500;
+    color:red;
     margin-bottom: 15px;
 }
 
@@ -93,7 +106,7 @@ body {
     color: #ddd;
     line-height: 1.6;
 }
-/* Contact Us */
+
 .contact-us {
     margin-top: 60px;
     padding: 40px;
@@ -102,7 +115,7 @@ body {
 }
 
 .contact-us h2 {
-    color: #f7b500;
+    color: red;
     margin-bottom: 10px;
 }
 
@@ -132,7 +145,7 @@ body {
 
 .contact-box h4 {
     margin-bottom: 5px;
-    color: #f7b500;
+    color: red;
 }
 
 .contact-box p {

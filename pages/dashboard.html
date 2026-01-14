@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Rental Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+
+<header class="topbar">
+    <h2>Car Rental System</h2>
+    <nav>
+        <a class="active">Dashboard</a>
+        <a>Manage Cars</a>
+        <a>Bookings</a>
+        <a>Customers</a>
+    </nav>
+    <div class="admin">Admin</div>
+</header>
+
+
+<main class="dashboard">
+
+    
+    <section class="stats">
+        <div class="stat-card">
+            <h3>Available Cars</h3>
+            <p>15</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Bookings</h3>
+            <p>42</p>
+        </div>
+        <div class="stat-card">
+            <h3>Ongoing Rentals</h3>
+            <p>8</p>
+        </div>
+        <div class="stat-card">
+            <h3>Customers</h3>
+            <p>28</p>
+        </div>
+    </section>
+
+    
+    <section class="middle">
+
+        
+        <div class="panel">
+            <h3>Bookings Overview</h3>
+            <div class="chart-placeholder">
+                📈 Booking chart goes here
+            </div>
+        </div>
+
+        
+        <div class="panel">
+            <h3>Rental Status</h3>
+            <ul class="status-list">
+                <li>Ongoing <span>8</span></li>
+                <li>Upcoming <span>12</span></li>
+                <li>Completed <span>22</span></li>
+                <li>Cancelled <span class="danger">4</span></li>
+            </ul>
+        </div>
+
+    </section>
+
+    
+    <section class="panel">
+        <h3>Latest Bookings</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Car</th>
+                    <th>Period</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Bruno Fernandes</td>
+                    <td>Mercedes C-Class</td>
+                    <td>25/04 - 28/04</td>
+                    <td><span class="badge ongoing">Ongoing</span></td>
+                </tr>
+                <tr>
+                    <td>Mason Mount</td>
+                    <td>BMW X5</td>
+                    <td>24/04 - 26/04</td>
+                    <td><span class="badge completed">Completed</span></td>
+                </tr>
+                <tr>
+                    <td>Kobbie Mainoo</td>
+                    <td>Nissan Altima</td>
+                    <td>22/04 - 24/04</td>
+                    <td><span class="badge upcoming">Upcoming</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>
