@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="about-us.css">
     <link rel="stylesheet" href="../style.css">
     <script src="../js/main.js" defer></script>
+    <script src="../js/api.js" defer></script>
+    <script src="../js/auth.js" defer></script>
 </head>
 <body>
 
@@ -24,8 +26,15 @@
             <a href="./listings.html">Vehicle</a>
             <a href="./rent.html">Offers</a>
             <a href="./about-us.html">About us</a>
+            <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
         </nav>
-        <a href="./rent.html" class="btn">Book now</a>
+        <div class="btn-group">
+            <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+            <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+            <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+            <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+            <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+        </div>
     </div>
 </header>
 

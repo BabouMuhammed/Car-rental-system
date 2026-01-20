@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Rentify</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../js/api.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="intro">
+        <h2><span>Rent</span>ify</h2>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="../index.html">Home</a>
+            <a href="./listings.html">Vehicle</a>
+            <a href="./rent.html">Offers</a>
+            <a href="./about-us.html">About us</a>
+            <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
+        </nav>
+        <div class="btn-group">
+            <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+            <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+            <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+            <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+            <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <h1>Welcome Back</h1>
+            <p class="login-subtitle">Sign in to your Rentify account</p>
+
+            <form class="login-form" id="loginForm">
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn google">
+                    <span>🔵</span> Google
+                </button>
+                <button type="button" class="social-btn facebook">
+                    <span>👥</span> Facebook
+                </button>
+            </div>
+
+            <p class="signup-link">Don't have an account? <a href="./signup.html">Sign up here</a></p>
+        </div>
+
+        <div class="login-image">
+            <img src="data:image/jpeg;base64,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" alt="Car rental service">
+            <div class="image-overlay"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2024 Rentify. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

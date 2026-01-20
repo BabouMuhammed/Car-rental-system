@@ -6,7 +6,10 @@
     <title>Car Listings</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="listings.css">
+    <script src="../js/api.js" defer></script>
     <script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/listings.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -22,8 +25,15 @@
                 <a href="listings.html">Vehicle</a>
                 <a href="./rent.html">Offers</a>
                 <a href="./about-us.html">About us</a>
+                <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
             </nav>
-            <a href="./rent.html" class="btn">Book now</a>
+            <div class="btn-group">
+                <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+                <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+                <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+                <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+                <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+            </div>
         </div>
     </header>
 
@@ -33,28 +43,23 @@
                 <img src="https://www.nissan.ca/content/dam/Nissan/Canada/special-editions/off-roading/nissan-pathfinder-rock-creek-kicking-up-dust-on-a-forest-trail-D-T.jpg" alt="Car on a forest trail">
             </div>
 
-            <form class="filter-bar" action="#" aria-label="Filter cars">
-                <div class="form-input-l">
-                    <label for="location">Location</label>
-                    <input id="location" type="text" placeholder="Search location...">
-                </div>
+            <form class="filter-bar" id="filterForm" aria-label="Filter cars">
                 <div class="form-input-l">
                     <label for="brand">Brand</label>
-                    <select id="brand">
-                        <option value="" disabled selected hidden>Select brand</option>
-                        <option value="BMW">BMW</option>
-                        <option value="Benz">Benz</option>
-                        <option value="Chevrolet">Chevrolet</option>
+                    <input id="brand" type="text" placeholder="Search brand...">
+                </div>
+                <div class="form-input-l">
+                    <label for="fuel">Fuel Type</label>
+                    <select id="fuel">
+                        <option value="">All Fuel Types</option>
+                        <option value="GASOIL">Diesel</option>
+                        <option value="PETROL">Petrol</option>
+                        <option value="ELECTRIC">Electric</option>
                     </select>
                 </div>
                 <div class="form-input-l">
-                    <label for="type">Type</label>
-                    <select id="type">
-                        <option value="" disabled selected hidden>Select type</option>
-                        <option value="Electric">Electric</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Petrol">Petrol</option>
-                    </select>
+                    <label for="priceRange">Max Price per Day</label>
+                    <input id="priceRange" type="number" placeholder="Max price..." min="0">
                 </div>
                 <button class="search-btn" type="submit" aria-label="Search">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -63,72 +68,11 @@
         </section>
 
         <section class="card">
-            <h1>Finest Cars</h1>
-            <p class="subtitle">Available for rent this week</p>
+            <h1>Available Cars</h1>
+            <p class="subtitle" id="subtitle">Loading cars...</p>
 
-            <div class="car-list" aria-label="Car listings">
-                <article class="car-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSktN05fIqXpILOz1Yvkw2jxS5XGHKYDBRQQ&s" alt="Benz car">
-                    <h3>Benz</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDbpyPx7MFqxjFOD9n6S3jsIjiumVDVMSQuQ&s" alt="Benz car">
-                    <h3>Benz</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSRLtNraaYEmcv32CEcAq0r_abCMwCv6YuQw&s" alt="Benz car">
-                    <h3>Benz</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://i.pinimg.com/736x/78/44/f8/7844f8f13411dd0dcb8a6cc7853592d6.jpg" alt="BMW M2">
-                    <h3>BMW M2</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYpMeBpDR2_VqYGCMPtn2WL3yNF8b6859UUw&s" alt="BMW car">
-                    <h3>BMW</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://www.shutterstock.com/image-vector/luxury-premium-realistic-sedan-coupe-600nw-2263077435.jpg" alt="BMW X6 illustration">
-                    <h3>BMW X6</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://i.pinimg.com/736x/69/03/e3/6903e3af13e344c22909bcdce1768077.jpg" alt="BMW car">
-                    <h3>BMW X6</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://purepng.com/public/uploads/large/purepng.com-chevrolet-camaro-sema-white-carcarvehicletransportchevroletchevy-9615246520714hano.png" alt="Chevrolet Camaro">
-                    <h3>Chevrolet Camaro</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
-
-                <article class="car-item">
-                    <img src="https://i.pinimg.com/736x/69/03/e3/6903e3af13e344c22909bcdce1768077.jpg" alt="Chevrolet car">
-                    <h3>Chevrolet</h3>
-                    <p>GMD 2,500 per day</p>
-                    <a class="rent-now" href="./rent.html">Rent Now</a>
-                </article>
+            <div class="car-list" id="carList" aria-label="Car listings">
+                <!-- Cars will be loaded dynamically here -->
             </div>
 
             <div class="search">
@@ -136,9 +80,9 @@
                 <p>Can't find what you're looking for? Tell us what your dream car is and we will find it for you.</p>
 
                 <div class="dream-car-form">
-                    <input type="text" class="searchBar" placeholder="Mobile number*">
-                    <input type="text" class="searchBar" placeholder="Car make and model*">
-                    <button class="btn" type="button">Find for me</button>
+                    <input type="text" class="searchBar" id="userPhone" placeholder="Mobile number*">
+                    <input type="text" class="searchBar" id="dreamCar" placeholder="Car make and model*">
+                    <button class="btn" id="findCarBtn" type="button">Find for me</button>
                 </div>
             </div>
         </section>

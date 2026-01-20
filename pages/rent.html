@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent Mercedes Benz</title>
+    <title>Book a Car | Rentify</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="rent.css">
+    <script src="../js/api.js" defer></script>
     <script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="../js/rental.js" defer></script>
 </head>
 <body>
 
-    
     <header class="header">
         <div class="intro">
             <h2><span>Rent</span>ify</h2>
@@ -24,8 +26,15 @@
                 <a href="./listings.html">Vehicle</a>
                 <a href="./rent.html">Offers</a>
                 <a href="./about-us.html">About us</a>
+                <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
             </nav>
-            <a href="./rent.html" class="btn">Book now</a>
+            <div class="btn-group">
+                <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+                <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+                <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+                <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+                <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+            </div>
         </div>
     </header>
 
@@ -35,49 +44,48 @@
 
         <div class="content">
 
-            
             <div class="car-card">
-                <img src="https://blueprint10.s3.amazonaws.com/KTiqAfxqoHaSgE%2BzKW8374JR6L0yVU5heLFP4a4G/CDy2BvBgoiXPo024/Vm3pWg%3D%3D/NwiO/header.jpg" alt="car">
+                <img id="carImage" src="" alt="Selected car">
             </div>
-            
 
-            
             <div class="booking-card">
-                <h2>GMD 2,500 <span>PER DAY</span></h2>
+                <h2 id="carPrice">Select a car <span>PER DAY</span></h2>
 
-                <label>Pickup date</label>
-                <input type="date">
+                <form id="rentalForm">
+                    <div id="successMessage" class="success-message" style="display: none;"></div>
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-                <label>Return date</label>
-                <input type="date">
+                    <input type="hidden" id="car_id" name="car_id">
+                    <input type="hidden" id="price_per_day" name="price_per_day">
+                    <input type="hidden" id="total_price" name="total_price">
 
-                <label>Pickup time</label>
-                <input type="time">
+                    <label>Pickup date</label>
+                    <input type="date" id="start_date" name="start_date" required>
 
-                <label>Pickup location</label>
-                <select>
-                    <option>Banjul</option>
-                    <option>Serrekunda</option>
-                    <option>Brikama</option>
-                </select>
+                    <label>Return date</label>
+                    <input type="date" id="end_date" name="end_date" required>
 
-                <label>Full Name</label>
-                <input type="text" placeholder="Enter your full name">
+                    <label>Pickup time</label>
+                    <input type="time" id="pickup_time" name="pickup_time" required>
 
-                <label>Phone Number</label>
-                <input type="text" pattern="[0-9]{3}-[0-9]{4}" placeholder="123-7890">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" readonly>
 
-                <label>Email Address</label>
-                <input type="email" placeholder="name@email.com">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" readonly>
 
-                <label>Comments</label>
-                <textarea rows="3">Please have the car filled with fuel.</textarea>
+                    <label>Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
 
-                <div class="total">
-                    Total Cost: <strong>GMD 2,500</strong>
-                </div>
+                    <label>Special Requests (Optional)</label>
+                    <textarea id="comments" name="comments" rows="3" placeholder="Any special requests?"></textarea>
 
-                <button>Confirm Booking</button>
+                    <div class="total">
+                        Total Cost: <strong id="totalCost">$0</strong>
+                    </div>
+
+                    <button type="submit" id="confirmBtn" class="booking-btn">Confirm Booking</button>
+                </form>
             </div>
 
         </div>

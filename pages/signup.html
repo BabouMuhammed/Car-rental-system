@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Rentify</title>
+    <link rel="stylesheet" href="signup.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../js/api.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="intro">
+        <h2><span>Rent</span>ify</h2>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="../index.html">Home</a>
+            <a href="./listings.html">Vehicle</a>
+            <a href="./rent.html">Offers</a>
+            <a href="./about-us.html">About us</a>
+            <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
+        </nav>
+        <div class="btn-group">
+            <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+            <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+            <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+            <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+            <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main class="signup-page">
+    <div class="signup-container">
+        <div class="signup-card">
+            <h1>Create Account</h1>
+            <p class="signup-subtitle">Join Rentify and start renting today</p>
+
+            <form class="signup-form" id="signupForm">
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="muhammed " required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="babou" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" name="email" placeholder="ceesay@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+220 2357946" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="terms-agree">
+                        <input type="checkbox" name="terms" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="signup-btn" id="signupBtn">Create Account</button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <div class="social-signup">
+                <button type="button" class="social-btn google">
+                    <span>🔵</span> Google
+                </button>
+                <button type="button" class="social-btn facebook">
+                    <span>👥</span> Facebook
+                </button>
+            </div>
+
+            <p class="login-link">Already have an account? <a href="./login.html">Sign in here</a></p>
+        </div>
+
+        <div class="signup-image">
+            <img src="https://sureshdrives.com/blog/wp-content/uploads/2024/12/c300-mercedes-w206-1.jpg" alt="Car rental experience">
+            <div class="image-overlay"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2024 Rentify. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
