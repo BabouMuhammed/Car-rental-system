@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <title>Car Rental Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/main.js" defer></script>
+    <script src="../js/dashboard.js" defer></script>
 </head>
 <body>
+
+
 
 
 <header class="topbar">
     <h2>Car Rental System</h2>
     <nav>
-        <a class="active">Dashboard</a>
-        <a>Manage Cars</a>
-        <a>Bookings</a>
-        <a>Customers</a>
+        <a class="active" data-tab="dashboard" href="#dashboard">Dashboard</a>
+        <a data-tab="cars" href="#cars">Manage Cars</a>
+        <a data-tab="bookings" href="#bookings">Bookings</a>
+        <a data-tab="customers" href="#customers">Customers</a>
     </nav>
     <div class="admin">Admin</div>
 </header>

@@ -3,16 +3,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | Car Rental</title>
     <link rel="stylesheet" href="about-us.css">
     <link rel="stylesheet" href="../style.css">
+    <script src="../js/main.js" defer></script>
 </head>
 <body>
 
-<header class="top-nav">
-    <h2>CAR RENTAL</h2>
+<header class="header">
+    <div class="intro">
+        <h2><span>Rent</span>ify</h2>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <a href="../index.html">Home</a>
+            <a href="./listings.html">Vehicle</a>
+            <a href="./rent.html">Offers</a>
+            <a href="./about-us.html">About us</a>
+        </nav>
+        <a href="./rent.html" class="btn">Book now</a>
+    </div>
 </header>
 
+<main class="about-page">
 <section class="about-container">
 
     <div class="about-card">
@@ -69,7 +86,6 @@
     </div>
 
 </section>
-
 <section class="contact-us">
 
     <h2>CONTACT US</h2>
@@ -103,6 +119,9 @@
 </section>
 <footer class="footer">
     <p>&copy; 2024 Car Rental. All rights reserved.</p>
+</footer>
+
+</main>
 
 </body>
 </html>
