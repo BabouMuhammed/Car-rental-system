@@ -86,17 +86,30 @@ h1 {
 .car-card {
     background: #111317; /* slightly darker to improve contrast */
     border-radius: 12px;
-    padding: 28px; /* more inner spacing */
+    padding: 20px; /* tighter padding when using frame */
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
-.car-card img {
+/* Image frame keeps aspect ratio and centers the image without cropping */
+.image-frame {
     width: 100%;
-    border-radius: 12px;
-    height: 520px; /* larger image for clarity */
-    object-fit: cover;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 8px;
+}
+
+.image-frame img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* show the whole car */
     display: block;
-    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 6px;
+    background: transparent;
 }
 
 
@@ -165,8 +178,8 @@ h1 {
         grid-template-columns: 1fr;
     }
 
-    .car-card img {
-        height: 320px; /* keep reasonably large on smaller screens */
+    .image-frame {
+        aspect-ratio: 4 / 3; /* slightly taller on smaller screens */
     }
 }
 
