@@ -153,15 +153,15 @@ body.dashboard-body {
 
 /* CHART PLACEHOLDER */
 .chart-placeholder {
-    height: 250px;
+    height: 300px;
     background: #fcfcfc;
-    border: 2px dashed #ddd; /* Dashed border for placeholder look */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #888;
     border-radius: 12px;
+    position: relative;
 }
 
 /* STATUS LIST */
