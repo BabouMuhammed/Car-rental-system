@@ -452,90 +452,9 @@
       // Load latest bookings into the dashboard table
       loadLatestBookings(rentals, user.role);
       
-      // Load booking chart
-      if (user.role === 'ADMIN') {
-        loadBookingChart(rentals);
-      }
-      
     } catch (error) {
       console.error('Error loading dashboard stats:', error);
     }
-  }
-
-  function loadBookingChart(rentals) {
-    const ctx = document.getElementById('bookingChart');
-    if (!ctx) return;
-
-    // Aggregate bookings by month
-    const monthCounts = {};
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    // Initialize all months with 0
-    months.forEach(m => monthCounts[m] = 0);
-
-    // Count bookings by month
-    rentals.forEach(rental => {
-      const startMs = parseDateToMs(rental.start_date);
-      if (startMs) {
-        const date = new Date(startMs);
-        const month = months[date.getMonth()];
-        monthCounts[month] = (monthCounts[month] || 0) + 1;
-      }
-    });
-
-    // Destroy existing chart if it exists
-    if (window.bookingChartInstance) {
-      window.bookingChartInstance.destroy();
-    }
-
-    // Create chart
-    window.bookingChartInstance = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: months,
-        datasets: [
-          {
-            label: 'Monthly Bookings',
-            data: months.map(m => monthCounts[m]),
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#3b82f6',
-            pointBorderColor: '#fff',
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              color: '#555',
-              font: { size: 12, weight: 'bold' }
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: Math.max(...months.map(m => monthCounts[m])) + 2,
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            ticks: { color: '#777', stepSize: 1 }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: '#777' }
-          }
-        }
-      }
-    });
   }
 
   function loadLatestBookings(rentals, role) {

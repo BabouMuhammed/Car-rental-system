@@ -127,7 +127,6 @@
       
       // Create rental booking with backend data only
       const rentalData = {
-        // backend uses req.user._id (from auth middleware), no need to pass user_id
         car_id: carId,
         // store dates as milliseconds (backend expects Number)
         start_date: new Date(startDate).getTime(),
@@ -137,13 +136,10 @@
 
       const rentalResponse = await RentalAPI.create(rentalData);
 
-      // Store rental info in session for payment page
-      sessionStorage.setItem('currentRental', JSON.stringify(rentalResponse));
-      
-      showSuccess(successDiv, 'Rental booked successfully! Redirecting to payment...');
+      showSuccess(successDiv, 'Rental booked successfully! Redirecting to dashboard...');
       
       setTimeout(() => {
-        window.location.href = './payment.html';
+        window.location.href = './dashboard.html';
       }, 2000);
 
     } catch (error) {
