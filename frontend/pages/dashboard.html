@@ -14,26 +14,35 @@
     <script src="../js/auth.js" defer></script>
     <script src="../js/dashboard.js" defer></script>
 </head>
-<body>
+<body class="dashboard-body">
 
-<header class="topbar">
-    <h2><span>Rent</span>ify Admin</h2>
-    <nav>
-        <a class="active" data-tab="dashboard" href="#dashboard">Dashboard</a>
-        <a data-tab="cars" href="#cars">Manage Cars</a>
-        <a data-tab="bookings" href="#bookings">Bookings</a>
-        <a data-tab="customers" href="#customers">Customers</a>
-        <a href="../index.html">Back to Home</a>
-    </nav>
-    <div class="admin">
-        <span class="user-icon">👤</span>
-        <span class="logout-btn">Logout</span>
+<div class="dashboard-container">
+    <header class="header">
+        <div class="intro">
+            <h2><span>Rent</span>ify</h2>
+            <nav class="nav-links" id="navLinks">
+                <a class="active" data-tab="dashboard" href="#dashboard">Dashboard</a>
+                <a data-tab="cars" href="#cars">Manage Cars</a>
+                <a data-tab="bookings" href="#bookings">Bookings</a>
+                <a data-tab="customers" href="#customers">Customers</a>
+                <a href="../index.html">Home</a>
+            </nav>
+            <div class="btn-group">
+                <span class="admin-info" style="color: white; margin-right: 15px;"><span class="user-icon">👤</span> <span id="userRoleName">Admin</span></span>
+                <button class="btn logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-hero">
+        <div class="hero-content">
+            <h1 id="welcomeText">Dashboard Overview</h1>
+            <p>Manage your fleet, bookings, and customers in one place.</p>
+        </div>
     </div>
-</header>
 
-<main class="dashboard">
-
-    <!-- DASHBOARD TAB -->
+    <main class="dashboard">
+        <!-- DASHBOARD TAB -->
     <div class="tab-content" id="dashboard-tab">
         <section class="stats">
             <div class="stat-card">

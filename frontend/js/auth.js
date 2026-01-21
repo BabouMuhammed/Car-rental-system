@@ -71,6 +71,7 @@
       const lastName = document.getElementById('lastName').value.trim();
       const email = document.getElementById('signup-email').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
       const password = document.getElementById('signup-password').value.trim();
       const confirmPassword = document.getElementById('confirm-password').value.trim();
       const errorDiv = document.getElementById('errorMessage');
@@ -81,7 +82,7 @@
       errorDiv.textContent = '';
 
       // Validate inputs
-      if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+      if (!firstName || !lastName || !email || !phone || !address || !password || !confirmPassword) {
         showError(errorDiv, 'Please fill in all fields');
         return;
       }
@@ -105,6 +106,7 @@
           name: `${firstName} ${lastName}`,
           email,
           phone,
+          address,
           password: password,
         });
 

@@ -5,7 +5,7 @@
 
 // Detect if we are running locally or on a deployed server
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:5000/api'
+  ? 'https://car-rental-system-k3z8.onrender.com/api'
   : '/api';
 
 /**
@@ -64,7 +64,7 @@ const AuthAPI = {
    * Register a new user
    */
   register: async (userData) => {
-    return apiRequest('/auth/register', {
+    return apiRequest('/users/register', {
       method: 'POST',
       body: JSON.stringify(userData),
     });
@@ -75,7 +75,7 @@ const AuthAPI = {
    */
   login: async (credentials) => {
     try {
-      const response = await apiRequest('/auth/login', {
+      const response = await apiRequest('/users/login', {
         method: 'POST',
         body: JSON.stringify(credentials),
       });

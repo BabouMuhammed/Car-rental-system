@@ -11,17 +11,28 @@
       return;
     }
 
-    const topbar = document.querySelector(".topbar");
-    if (!topbar) return;
+    const header = document.querySelector(".header");
+    if (!header) return;
 
     // Update Topbar based on role
-    const titleSpan = topbar.querySelector("h2");
+    const titleSpan = header.querySelector("h2");
     if (titleSpan) {
       titleSpan.innerHTML = user.role === 'ADMIN' ? '<span>Rent</span>ify Admin' : '<span>Rent</span>ify Portal';
     }
 
-    const nav = topbar.querySelector("nav");
+    const nav = header.querySelector("nav");
     if (!nav) return;
+
+    // Update welcome text
+    const welcomeText = document.getElementById('welcomeText');
+    if (welcomeText) {
+        welcomeText.textContent = user.role === 'ADMIN' ? 'Admin Dashboard' : 'User Portal';
+    }
+
+    const userRoleName = document.getElementById('userRoleName');
+    if (userRoleName) {
+        userRoleName.textContent = user.role === 'ADMIN' ? 'Admin' : user.firstName || 'User';
+    }
 
     // Hide admin-only tabs for customers
     if (user.role !== 'ADMIN') {
