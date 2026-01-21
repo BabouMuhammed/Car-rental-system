@@ -426,9 +426,11 @@ footer{
     margin-bottom: 1rem;
     display: flex;
     flex-direction: row;
-    gap: 14rem;
+    gap: 8rem;
     padding: 3rem;
-    
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
 }
 .contact-us{
     display: flex;
@@ -470,6 +472,7 @@ label{
 }
 .logo{
     max-width: 70%;
+    margin: 0 auto;
 }
 .social-links{
     display: flex;
@@ -762,6 +765,8 @@ label{
         flex-direction: column;
         gap: 2rem;
         padding: 1.5rem;
+        align-items: center;
+        text-align: center;
     }
 
     .form-inputs {
@@ -776,6 +781,7 @@ label{
 
     .social-links {
         gap: 1rem;
+        justify-content: center;
     }
 
     .social-links svg {

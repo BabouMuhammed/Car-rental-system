@@ -17,11 +17,13 @@ async function apiRequest(endpoint, options = {}) {
   // Get token from localStorage if it exists
   const token = localStorage.getItem('authToken');
   
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+  const defaultOptions = { headers: {} };
+
+  // Only set JSON content-type when body is NOT FormData
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+  if (!isFormData) {
+    defaultOptions.headers['Content-Type'] = 'application/json';
+  }
 
   // Add authorization header if token exists
   if (token) {
@@ -142,6 +144,15 @@ const CarAPI = {
    * Create a new car
    */
   create: async (carData) => {
+    // Backend expects multipart/form-data with field "image"
+    if (typeof FormData !== 'undefined' && carData instanceof FormData) {
+      return apiRequest('/cars', {
+        method: 'POST',
+        body: carData,
+      });
+    }
+
+    // Back-compat: allow plain object (no image) but backend will reject without file
     return apiRequest('/cars', {
       method: 'POST',
       body: JSON.stringify(carData),
@@ -242,6 +253,14 @@ const RentalAPI = {
  * User API Endpoints
  */
 const UserAPI = {
+  /**
+   * Get all users (Admin only)
+   */
+  getAll: async () => {
+    return apiRequest('/users', {
+      method: 'GET',
+    });
+  },
   /**
    * Get user profile
    */

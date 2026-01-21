@@ -16,37 +16,46 @@
 </head>
 <body>
 
-<header class="header">
-    <div class="intro">
-        <h2><span>Rent</span>ify</h2>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav class="nav-links" id="navLinks">
-            <a href="../index.html">Home</a>
-            <a href="./listings.html">Vehicle</a>
-            <a href="./rent.html">Offers</a>
-            <a href="./about-us.html">About us</a>
-            <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
-            <div class="btn-group">
-                <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
-                <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
-                <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
-                <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
-                <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+<div class="about-hero">
+    <header class="header">
+        <div class="intro">
+            <h2><span>Rent</span>ify</h2>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        </nav>
-    </div>
-</header>
+            <nav class="nav-links" id="navLinks">
+                <a href="../index.html">Home</a>
+                <a href="./listings.html">Vehicle</a>
+                <a href="./rent.html">Offers</a>
+                <a href="./about-us.html">About us</a>
+                <a href="./dashboard.html" id="dashboardNav" class="dashboard-link" style="display: none;">Dashboard</a>
+                <div class="btn-group">
+                    <a href="./rent.html" class="btn" id="bookNowBtn">Book now</a>
+                    <a href="./login.html" class="btn auth-btn" id="loginBtn" style="display: none;">Login</a>
+                    <a href="./signup.html" class="btn signup-btn" id="signupBtn" style="display: none;">Sign Up</a>
+                    <a href="./dashboard.html" id="dashboardBtn" class="btn dashboard-btn" style="display: none;">Dashboard</a>
+                    <button id="logoutBtn" class="btn logout-btn" style="display: none;">Logout</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="about-hero-content" aria-label="About Rentify">
+        <div class="about-hero-inner">
+            <h1>About Rentify</h1>
+            <p>Reliable rentals, transparent pricing, and a modern booking experience built for everyday drivers and businesses.</p>
+        </div>
+    </section>
+</div>
 
 <main class="about-page">
 <section class="about-container">
 
     <div class="about-card">
-        <h1>ABOUT US</h1>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAdEYh4IqWIhKxfqGjgUr2IBPODHnJU3qCBQ&s" alt="">
+        <h2>Who we are</h2>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAdEYh4IqWIhKxfqGjgUr2IBPODHnJU3qCBQ&s" alt="Rentify team and fleet">
 
         <p>
             We are a reliable car rental company committed to providing
@@ -60,7 +69,15 @@
     <div class="info-grid">
 
         <div class="info-box">
-            <div class="icon">🚗</div>
+            <div class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 13l2-6a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 7l2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M5 13h14v5a2 2 0 0 1-2 2h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M5 20H4a2 2 0 0 1-2-2v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M17 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
             <h3>Wide Car Selection</h3>
             <p>
                 Choose from economy, luxury, and executive vehicles
@@ -69,7 +86,13 @@
         </div>
 
         <div class="info-box">
-            <div class="icon">💰</div>
+            <div class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 7h16v10H4V7Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 7V5h8v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
             <h3>Affordable Prices</h3>
             <p>
                 Transparent pricing with no hidden charges.
@@ -78,7 +101,12 @@
         </div>
 
         <div class="info-box">
-            <div class="icon">📍</div>
+            <div class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22s7-4.438 7-12a7 7 0 0 0-14 0c0 7.562 7 12 7 12Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 11.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
             <h3>Easy Pickup</h3>
             <p>
                 Convenient pickup locations across major cities
@@ -100,28 +128,42 @@
 </section>
 <section class="contact-us">
 
-    <h2>CONTACT US</h2>
+    <h2>Contact Us</h2>
     <p class="contact-text">
         Need help or want to make a booking?  
-        Reach out to us anytime — we’re always ready to assist you.
+        Reach out to us anytime — we are always ready to assist you.
     </p>
 
     <div class="contact-grid">
 
         <div class="contact-box">
-            <span>📞</span>
+            <span class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.5 3h3l1 5-2 1c1.2 2.6 3.4 4.8 6 6l1-2 5 1v3c0 1.1-.9 2-2 2C10.6 19 5 13.4 5 6c0-1.1.9-2 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+            </span>
             <h4>Phone</h4>
             <p>+220 123 4567</p>
         </div>
 
         <div class="contact-box">
-            <span>📧</span>
+            <span class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
             <h4>Email</h4>
             <p>info@carrental.com</p>
         </div>
 
         <div class="contact-box">
-            <span>📍</span>
+            <span class="icon" aria-hidden="true">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22s7-4.438 7-12a7 7 0 0 0-14 0c0 7.562 7 12 7 12Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 11.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </span>
             <h4>Location</h4>
             <p>Banjul, The Gambia</p>
         </div>
@@ -130,7 +172,7 @@
 
 </section>
 <footer class="footer">
-    <p>&copy; 2024 Car Rental. All rights reserved.</p>
+    <p>&copy; 2026 Rentify. All rights reserved.</p>
 </footer>
 
 </main>

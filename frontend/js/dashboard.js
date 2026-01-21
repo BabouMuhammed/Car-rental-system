@@ -4,6 +4,191 @@
  * No hardcoded values - all data comes from API endpoints
  */
 (function () {
+  let cachedCars = [];
+
+  function $(selector) {
+    return document.querySelector(selector);
+  }
+
+  function setText(selectorOrEl, value) {
+    const el = typeof selectorOrEl === 'string' ? document.querySelector(selectorOrEl) : selectorOrEl;
+    if (el) el.textContent = value;
+  }
+
+  function showEl(el) {
+    if (el) el.classList.remove('hidden');
+  }
+
+  function hideEl(el) {
+    if (el) el.classList.add('hidden');
+  }
+
+  function escapeHtml(str) {
+    return String(str ?? '').replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[m]));
+  }
+
+  function normalizeStatus(s) {
+    const v = String(s || '').toUpperCase();
+    if (v === 'AVAILABLE' || v === 'NOT_AVAILABLE') return v;
+    if (v === 'NOT AVAILABLE' || v === 'NOT-AVAILABLE') return 'NOT_AVAILABLE';
+    return 'AVAILABLE';
+  }
+
+  function badgeClassForCarStatus(status) {
+    const s = normalizeStatus(status);
+    return s === 'AVAILABLE' ? 'available' : 'rented';
+  }
+
+  function badgeClassForRentalStatus(status) {
+    const s = String(status || 'PENDING').toLowerCase();
+    if (s === 'accepted') return 'completed';
+    if (s === 'rejected') return 'cancelled';
+    return 'upcoming';
+  }
+
+  function isValidNumber(n) {
+    return typeof n === 'number' && Number.isFinite(n);
+  }
+
+  function parseDateToMs(value) {
+    if (value == null) return null;
+    // Backend stores dates as Number; but some clients may send ISO strings
+    if (typeof value === 'number') return value;
+    const ms = new Date(value).getTime();
+    return Number.isFinite(ms) ? ms : null;
+  }
+
+  function daysBetweenInclusive(startMs, endMs) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    return Math.round(Math.abs((endMs - startMs) / oneDay)) + 1;
+  }
+
+  function initCarModal() {
+    const modal = $('#car-modal');
+    const closeBtn = $('#car-modal-close');
+    const cancelBtn = $('#car-cancel-btn');
+    const form = $('#car-form');
+    const errorEl = $('#car-form-error');
+
+    function openModal(mode, car) {
+      if (!modal || !form) return;
+      form.reset();
+      hideEl(errorEl);
+      $('#car-id').value = car?._id || '';
+      $('#car-modal-title').textContent = mode === 'edit' ? 'Edit Car' : 'Add New Car';
+
+      // Prefill on edit
+      if (car) {
+        $('#car-brand').value = car.brand || '';
+        $('#car-model').value = car.model || '';
+        $('#car-price').value = car.price_per_day ?? '';
+        $('#car-fuel').value = car.fuel_type || '';
+        $('#car-status').value = normalizeStatus(car.Status);
+        $('#car-seats').value = car.seating_capacity ?? '';
+      }
+
+      // Backend doesn't support image update on PUT, so only require image on create
+      const imageRow = $('#car-image-row');
+      const imageInput = $('#car-image');
+      if (mode === 'edit') {
+        if (imageRow) imageRow.style.display = 'none';
+        if (imageInput) imageInput.required = false;
+      } else {
+        if (imageRow) imageRow.style.display = '';
+        if (imageInput) imageInput.required = true;
+      }
+
+      modal.setAttribute('aria-hidden', 'false');
+      showEl(modal);
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.setAttribute('aria-hidden', 'true');
+      hideEl(modal);
+    }
+
+    // Expose for other handlers
+    window.__openCarModal = openModal;
+    window.__closeCarModal = closeModal;
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    // Close when clicking backdrop
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideEl(errorEl);
+
+        const id = $('#car-id').value.trim();
+        const brand = $('#car-brand').value.trim();
+        const model = $('#car-model').value.trim();
+        const price = Number($('#car-price').value);
+        const fuel = $('#car-fuel').value;
+        const status = $('#car-status').value;
+        const seats = Number($('#car-seats').value);
+
+        if (!brand || !model || !fuel || !status || !isValidNumber(price) || !isValidNumber(seats)) {
+          errorEl.textContent = 'Please fill all fields with valid values.';
+          showEl(errorEl);
+          return;
+        }
+
+        try {
+          if (id) {
+            await CarAPI.update(id, {
+              brand,
+              model,
+              price_per_day: price,
+              fuel_type: fuel,
+              Status: status,
+              seating_capacity: seats,
+            });
+          } else {
+            const imageInput = $('#car-image');
+            const file = imageInput?.files?.[0];
+            if (!file) {
+              errorEl.textContent = 'Please choose an image.';
+              showEl(errorEl);
+              return;
+            }
+
+            const fd = new FormData();
+            fd.append('brand', brand);
+            fd.append('model', model);
+            fd.append('price_per_day', String(price));
+            fd.append('fuel_type', fuel);
+            fd.append('Status', status);
+            fd.append('seating_capacity', String(seats));
+            fd.append('image', file);
+
+            await CarAPI.create(fd);
+          }
+
+          closeModal();
+          await loadTabData('cars');
+          await loadTabData('dashboard');
+        } catch (error) {
+          errorEl.textContent = error?.message || 'Failed to save car.';
+          showEl(errorEl);
+        }
+      });
+    }
+  }
+
   function initDashboardTabs() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) {
@@ -133,9 +318,13 @@
     const addBtn = document.querySelector(".add-btn");
     if (addBtn) {
       addBtn.addEventListener("click", () => {
-        alert("Add New Car form would open here");
+        if (user.role !== 'ADMIN') return;
+        if (window.__openCarModal) window.__openCarModal('create');
       });
     }
+
+    // Modal init
+    initCarModal();
   }
 
   async function loadTabData(tabName) {
@@ -165,7 +354,7 @@
       const cars = await CarAPI.getAll();
       const rentals = await RentalAPI.getAll();
       
-      const availableCars = cars.filter(c => c.Status === 'AVAILABLE' || c.Status === 'Available').length;
+      const availableCars = cars.filter(c => normalizeStatus(c.Status) === 'AVAILABLE').length;
       
       // Update stat card values
       const statCards = document.querySelectorAll('.stat-card');
@@ -173,21 +362,50 @@
 
       if (user.role === 'ADMIN') {
         const totalBookings = rentals.length;
-        const ongoingRentals = rentals.filter(r => r.rental_status === 'ONGOING').length;
-        const totalCustomers = totalBookings; // Placeholder logic
+        const accepted = rentals.filter(r => (r.rental_status || 'PENDING') === 'ACCEPTED').length;
+        const pending = rentals.filter(r => (r.rental_status || 'PENDING') === 'PENDING').length;
+        const rejected = rentals.filter(r => (r.rental_status || 'PENDING') === 'REJECTED').length;
+
+        let totalCustomers = '—';
+        try {
+          const users = await UserAPI.getAll();
+          totalCustomers = users.filter(u => u.role === 'CUSTOMER').length;
+        } catch (e) {
+          // If token/role doesn't allow, just show dash instead of wrong hardcoded value
+          totalCustomers = '—';
+        }
 
         if (statNumbers[0]) statNumbers[0].textContent = availableCars;
         if (statNumbers[1]) statNumbers[1].textContent = totalBookings;
-        if (statNumbers[2]) statNumbers[2].textContent = ongoingRentals;
+        if (statNumbers[2]) statNumbers[2].textContent = accepted;
         if (statNumbers[3]) statNumbers[3].textContent = totalCustomers; 
+
+        // Update status counts in right panel
+        const acceptedEl = document.querySelector('.status-list .count[data-status="ACCEPTED"]');
+        const pendingEl = document.querySelector('.status-list .count[data-status="PENDING"]');
+        const rejectedEl = document.querySelector('.status-list .count[data-status="REJECTED"]');
+        if (acceptedEl) acceptedEl.textContent = accepted;
+        if (pendingEl) pendingEl.textContent = pending;
+        if (rejectedEl) rejectedEl.textContent = rejected;
       } else {
         // Customer specific stats
-        const myBookings = rentals.length;
+        const myBookings = rentals.length; // backend already filters rentals by user for non-admin
         const totalSpent = rentals.reduce((acc, r) => acc + (r.total_price || 0), 0);
 
         if (statNumbers[0]) statNumbers[0].textContent = availableCars;
         if (statNumbers[1]) statNumbers[1].textContent = myBookings;
         if (statNumbers[2]) statNumbers[2].textContent = `$${totalSpent}`;
+
+        // Status counts for customer
+        const accepted = rentals.filter(r => (r.rental_status || 'PENDING') === 'ACCEPTED').length;
+        const pending = rentals.filter(r => (r.rental_status || 'PENDING') === 'PENDING').length;
+        const rejected = rentals.filter(r => (r.rental_status || 'PENDING') === 'REJECTED').length;
+        const acceptedEl = document.querySelector('.status-list .count[data-status="ACCEPTED"]');
+        const pendingEl = document.querySelector('.status-list .count[data-status="PENDING"]');
+        const rejectedEl = document.querySelector('.status-list .count[data-status="REJECTED"]');
+        if (acceptedEl) acceptedEl.textContent = accepted;
+        if (pendingEl) pendingEl.textContent = pending;
+        if (rejectedEl) rejectedEl.textContent = rejected;
       }
 
       // Load latest bookings into the dashboard table
@@ -209,14 +427,16 @@
 
     latest.forEach(rental => {
       const row = document.createElement('tr');
-      const statusClass = (rental.rental_status || 'PENDING').toLowerCase();
+      const statusClass = badgeClassForRentalStatus(rental.rental_status);
+      const startMs = parseDateToMs(rental.start_date);
+      const endMs = parseDateToMs(rental.end_date);
       
       row.innerHTML = `
-        <td>${role === 'ADMIN' ? (rental.user_id?.name || 'User') : 'Me'}</td>
-        <td>${rental.car_id ? `${rental.car_id.brand} ${rental.car_id.model}` : 'Unknown Car'}</td>
-        <td>${new Date(rental.start_date).toLocaleDateString()} - ${new Date(rental.end_date).toLocaleDateString()}</td>
+        <td>${role === 'ADMIN' ? escapeHtml(rental.user_id?.name || 'User') : 'Me'}</td>
+        <td>${rental.car_id && rental.car_id.brand ? escapeHtml(`${rental.car_id.brand} ${rental.car_id.model}`) : escapeHtml(String(rental.car_id || 'Unknown Car'))}</td>
+        <td>${startMs ? new Date(startMs).toLocaleDateString() : '—'} - ${endMs ? new Date(endMs).toLocaleDateString() : '—'}</td>
         <td>$${rental.total_price || 0}</td>
-        <td><span class="badge ${statusClass}">${rental.rental_status || 'PENDING'}</span></td>
+        <td><span class="badge ${statusClass}">${escapeHtml(rental.rental_status || 'PENDING')}</span></td>
         <td>
           ${role === 'ADMIN' && rental.rental_status === 'PENDING' ? 
             `<button class="action-btn accept" onclick="handleRentalStatus('${rental._id}', 'accept')">Accept</button>
@@ -246,7 +466,9 @@
 
   async function loadCarsData() {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
       const cars = await CarAPI.getAll();
+      cachedCars = Array.isArray(cars) ? cars : [];
       const tbody = document.querySelector('#cars-tab table tbody');
       
       if (!tbody) return;
@@ -255,21 +477,49 @@
       
       cars.forEach(car => {
         const row = document.createElement('tr');
-        const statusClass = (car.Status || 'AVAILABLE').toLowerCase();
+        const statusClass = badgeClassForCarStatus(car.Status);
         
         row.innerHTML = `
-          <td>${car.brand} ${car.model}</td>
-          <td>${car.fuel_type || 'N/A'}</td>
-          <td>${car.seating_capacity || 'N/A'} Seats</td>
+          <td>${escapeHtml(`${car.brand || ''} ${car.model || ''}`.trim() || '—')}</td>
+          <td>${escapeHtml(car.fuel_type || 'N/A')}</td>
+          <td>${escapeHtml(String(car.seating_capacity || 'N/A'))}</td>
           <td>$${car.price_per_day || 0}</td>
-          <td><span class="badge ${statusClass}">${car.Status || 'AVAILABLE'}</span></td>
+          <td><span class="badge ${statusClass}">${escapeHtml(normalizeStatus(car.Status))}</span></td>
           <td>
-            <button class="action-btn edit" data-car-id="${car._id}">Edit</button>
-            <button class="action-btn delete" data-car-id="${car._id}">Delete</button>
+            ${user?.role === 'ADMIN' ? `
+              <button class="action-btn edit" data-car-id="${car._id}">Edit</button>
+              <button class="action-btn delete" data-car-id="${car._id}">Delete</button>
+            ` : `<button class="action-btn view" data-car-id="${car._id}">View</button>`}
           </td>
         `;
         tbody.appendChild(row);
       });
+
+      // Attach handlers (event delegation)
+      tbody.onclick = async (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const carId = btn.getAttribute('data-car-id');
+        if (!carId) return;
+
+        if (btn.classList.contains('edit')) {
+          const car = cachedCars.find(c => c._id === carId);
+          if (window.__openCarModal) window.__openCarModal('edit', car);
+          return;
+        }
+
+        if (btn.classList.contains('delete')) {
+          if (!confirm('Delete this car?')) return;
+          try {
+            await CarAPI.delete(carId);
+            await loadTabData('cars');
+            await loadTabData('dashboard');
+          } catch (error) {
+            alert('Failed to delete car: ' + (error?.message || 'Unknown error'));
+          }
+          return;
+        }
+      };
       
     } catch (error) {
       console.error('Error loading cars data:', error);
@@ -281,24 +531,29 @@
       const user = JSON.parse(localStorage.getItem('user'));
       const rentals = await RentalAPI.getAll();
       const tbody = document.querySelector('#bookings-tab table tbody');
+      const countEl = document.querySelector('.booking-count');
       
       if (!tbody) return;
       
       tbody.innerHTML = '';
+      if (countEl) countEl.textContent = `Total: ${rentals.length}`;
       
       rentals.forEach((rental, index) => {
         const row = document.createElement('tr');
-        const statusClass = (rental.rental_status || 'PENDING').toLowerCase();
+        const statusClass = badgeClassForRentalStatus(rental.rental_status);
+        const startMs = parseDateToMs(rental.start_date);
+        const endMs = parseDateToMs(rental.end_date);
+        const totalDays = (startMs != null && endMs != null) ? daysBetweenInclusive(startMs, endMs) : '—';
         
         row.innerHTML = `
           <td>#BK${String(index + 1).padStart(3, '0')}</td>
-          <td>${user.role === 'ADMIN' ? (rental.user_id?.name || 'Unknown User') : 'Me'}</td>
-          <td>${rental.car_id ? `${rental.car_id.brand} ${rental.car_id.model}` : 'Unknown Car'}</td>
-          <td>${new Date(rental.start_date).toLocaleDateString()}</td>
-          <td>${new Date(rental.end_date).toLocaleDateString()}</td>
-          <td>${Math.ceil((new Date(rental.end_date) - new Date(rental.start_date)) / (1000 * 60 * 60 * 24))}</td>
+          <td>${user.role === 'ADMIN' ? escapeHtml(rental.user_id?.name || 'Unknown User') : 'Me'}</td>
+          <td>${rental.car_id && rental.car_id.brand ? escapeHtml(`${rental.car_id.brand} ${rental.car_id.model}`) : escapeHtml(String(rental.car_id || 'Unknown Car'))}</td>
+          <td>${startMs ? new Date(startMs).toLocaleDateString() : '—'}</td>
+          <td>${endMs ? new Date(endMs).toLocaleDateString() : '—'}</td>
+          <td>${totalDays}</td>
           <td>$${rental.total_price || 0}</td>
-          <td><span class="badge ${statusClass}">${rental.rental_status || 'PENDING'}</span></td>
+          <td><span class="badge ${statusClass}">${escapeHtml(rental.rental_status || 'PENDING')}</span></td>
           <td>
             ${user.role === 'ADMIN' && rental.rental_status === 'PENDING' ? 
               `<button class="action-btn accept" onclick="handleRentalStatus('${rental._id}', 'accept')">Accept</button>
@@ -319,19 +574,21 @@
     try {
       const users = await UserAPI.getAll();
       const tbody = document.querySelector('#customers-tab table tbody');
+      const countEl = document.querySelector('.customer-count');
       
       if (!tbody) return;
       
       tbody.innerHTML = '';
+      if (countEl) countEl.textContent = `Total: ${users.length}`;
       
       users.forEach(user => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>#C${user._id.substring(0, 4)}</td>
-          <td>${user.name}</td>
-          <td>${user.email}</td>
-          <td>${user.phone || 'N/A'}</td>
-          <td>${user.role}</td>
+          <td>${escapeHtml(user.name || '—')}</td>
+          <td>${escapeHtml(user.email || '—')}</td>
+          <td>${escapeHtml(user.phone || 'N/A')}</td>
+          <td>${escapeHtml(user.role || '—')}</td>
           <td>${new Date(user.createdAt || Date.now()).toLocaleDateString()}</td>
           <td><span class="badge active">Active</span></td>
           <td><button class="action-btn view">View Profile</button></td>
