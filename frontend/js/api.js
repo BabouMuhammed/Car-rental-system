@@ -3,10 +3,8 @@
  * Handles all API calls to the backend
  */
 
-// Detect if we are running locally or on a deployed server
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'https://car-rental-system-k3z8.onrender.com/api'
-  : '/api';
+// Use the Render backend URL for all environments
+const API_BASE_URL = 'https://car-rental-system-k3z8.onrender.com/api';
 
 /**
  * Helper function to make API requests
