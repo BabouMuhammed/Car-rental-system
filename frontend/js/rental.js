@@ -127,10 +127,11 @@
       
       // Create rental booking with backend data only
       const rentalData = {
-        user_id: currentUser._id,
+        // backend uses req.user._id (from auth middleware), no need to pass user_id
         car_id: carId,
-        start_date: startDate,
-        end_date: endDate,
+        // store dates as milliseconds (backend expects Number)
+        start_date: new Date(startDate).getTime(),
+        end_date: new Date(endDate).getTime(),
         total_price: parseFloat(totalPrice),
       };
 

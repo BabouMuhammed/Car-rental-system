@@ -267,41 +267,47 @@
         <form id="car-form" class="modal-form">
             <input type="hidden" id="car-id" value="">
 
-            <div class="form-row">
-                <label>Brand</label>
-                <input id="car-brand" type="text" placeholder="e.g. Mercedes" required>
-            </div>
-            <div class="form-row">
-                <label>Model</label>
-                <input id="car-model" type="text" placeholder="e.g. C-Class" required>
-            </div>
-            <div class="form-row">
-                <label>Price per day</label>
-                <input id="car-price" type="number" min="0" step="1" placeholder="e.g. 150" required>
-            </div>
-            <div class="form-row">
-                <label>Fuel type</label>
-                <select id="car-fuel" required>
-                    <option value="">Select…</option>
-                    <option value="DIESEL">DIESEL</option>
-                    <option value="GASOIL">GASOIL</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <label>Status</label>
-                <select id="car-status" required>
-                    <option value="">Select…</option>
-                    <option value="AVAILABLE">AVAILABLE</option>
-                    <option value="NOT_AVAILABLE">NOT_AVAILABLE</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <label>Seating capacity</label>
-                <input id="car-seats" type="number" min="1" step="1" placeholder="e.g. 5" required>
-            </div>
-            <div class="form-row" id="car-image-row">
-                <label>Image</label>
-                <input id="car-image" type="file" accept="image/*" required>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label for="car-brand">Brand</label>
+                    <input id="car-brand" type="text" placeholder="e.g. Mercedes" autocomplete="organization" required>
+                </div>
+                <div class="form-row">
+                    <label for="car-model">Model</label>
+                    <input id="car-model" type="text" placeholder="e.g. C-Class" autocomplete="off" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="car-price">Price per day</label>
+                    <input id="car-price" type="number" min="0" step="1" placeholder="e.g. 150" inputmode="numeric" required>
+                </div>
+                <div class="form-row">
+                    <label for="car-seats">Seating capacity</label>
+                    <input id="car-seats" type="number" min="1" step="1" placeholder="e.g. 5" inputmode="numeric" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="car-fuel">Fuel type</label>
+                    <select id="car-fuel" required>
+                        <option value="">Select…</option>
+                        <option value="DIESEL">DIESEL</option>
+                        <option value="GASOIL">GASOIL</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="car-status">Status</label>
+                    <select id="car-status" required>
+                        <option value="">Select…</option>
+                        <option value="AVAILABLE">AVAILABLE</option>
+                        <option value="NOT_AVAILABLE">NOT_AVAILABLE</option>
+                    </select>
+                </div>
+
+                <div class="form-row full" id="car-image-row">
+                    <label for="car-image">Image</label>
+                    <input id="car-image" type="file" accept="image/*" required>
+                    <small class="form-help">JPG/PNG recommended. Max size depends on your server settings.</small>
+                </div>
             </div>
 
             <div class="form-actions">
@@ -316,3 +322,11 @@
 </body>
 
 </html>
+
+<!-- Global loader (hidden by default) -->
+<div id="global-loader" class="global-loader hidden" aria-hidden="true">
+    <div class="loader-box">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loader-text">Saving…</div>
+    </div>
+</div>

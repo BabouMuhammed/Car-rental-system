@@ -23,6 +23,23 @@
     if (el) el.classList.add('hidden');
   }
 
+  // Global loader controls
+  function showGlobalLoader(text) {
+    const loader = document.getElementById('global-loader');
+    if (!loader) return;
+    const txt = loader.querySelector('.loader-text');
+    if (txt && text) txt.textContent = text;
+    loader.setAttribute('aria-hidden', 'false');
+    loader.classList.remove('hidden');
+  }
+
+  function hideGlobalLoader() {
+    const loader = document.getElementById('global-loader');
+    if (!loader) return;
+    loader.setAttribute('aria-hidden', 'true');
+    loader.classList.add('hidden');
+  }
+
   function escapeHtml(str) {
     return String(str ?? '').replace(/[&<>"']/g, (m) => ({
       '&': '&amp;',
@@ -148,6 +165,11 @@
         }
 
         try {
+          // show loader and disable submit
+          const submitBtn = $('#car-submit-btn');
+          if (submitBtn) submitBtn.disabled = true;
+          showGlobalLoader(id ? 'Updating car…' : 'Saving…');
+
           if (id) {
             await CarAPI.update(id, {
               brand,
@@ -163,6 +185,8 @@
             if (!file) {
               errorEl.textContent = 'Please choose an image.';
               showEl(errorEl);
+              if (submitBtn) submitBtn.disabled = false;
+              hideGlobalLoader();
               return;
             }
 
@@ -178,12 +202,18 @@
             await CarAPI.create(fd);
           }
 
+          if (submitBtn) submitBtn.disabled = false;
+          hideGlobalLoader();
+
           closeModal();
           await loadTabData('cars');
           await loadTabData('dashboard');
         } catch (error) {
           errorEl.textContent = error?.message || 'Failed to save car.';
           showEl(errorEl);
+          const submitBtn = $('#car-submit-btn');
+          if (submitBtn) submitBtn.disabled = false;
+          hideGlobalLoader();
         }
       });
     }
@@ -463,14 +493,17 @@
   // Global handler for rental status (for admin)
   window.handleRentalStatus = async (id, action) => {
     try {
+      showGlobalLoader(action === 'accept' ? 'Accepting…' : 'Rejecting…');
       if (action === 'accept') {
         await RentalAPI.accept(id);
       } else {
         await RentalAPI.reject(id);
       }
+      hideGlobalLoader();
       loadTabData('dashboard');
       loadTabData('bookings');
     } catch (error) {
+      hideGlobalLoader();
       alert('Error updating rental: ' + error.message);
     }
   }
@@ -522,10 +555,13 @@
         if (btn.classList.contains('delete')) {
           if (!confirm('Delete this car?')) return;
           try {
+            showGlobalLoader('Deleting car…');
             await CarAPI.delete(carId);
+            hideGlobalLoader();
             await loadTabData('cars');
             await loadTabData('dashboard');
           } catch (error) {
+            hideGlobalLoader();
             alert('Failed to delete car: ' + (error?.message || 'Unknown error'));
           }
           return;

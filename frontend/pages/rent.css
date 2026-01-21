@@ -68,7 +68,7 @@ body {
 .container {
     width: min(1100px, 100%);
     margin: 0 auto;
-    padding: 120px 16px 60px; /* space for fixed header from style.css */
+    padding: 120px 20px 80px; /* more bottom space for clarity */
 }
 
 h1 {
@@ -78,24 +78,25 @@ h1 {
 
 .content {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 30px;
+    grid-template-columns: 4fr 2fr; /* give main image more room */
+    gap: 36px; /* more breathing room */
 }
 
 
 .car-card {
-    background: #1a1d24;
-    border-radius: 10px;
-    padding: 20px;
-    
+    background: #111317; /* slightly darker to improve contrast */
+    border-radius: 12px;
+    padding: 28px; /* more inner spacing */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
 .car-card img {
     width: 100%;
-    border-radius: 10px;
-    height: 420px;
+    border-radius: 12px;
+    height: 520px; /* larger image for clarity */
     object-fit: cover;
-
+    display: block;
+    border: 1px solid rgba(255,255,255,0.04);
 }
 
 
@@ -165,7 +166,7 @@ h1 {
     }
 
     .car-card img {
-        height: 260px;
+        height: 320px; /* keep reasonably large on smaller screens */
     }
 }
 
