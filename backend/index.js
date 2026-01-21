@@ -29,7 +29,7 @@ app.use('/api/users',userRoutes) // Map /api/users to userRoutes for profile
 app.use('/api/rentals',bookingRoutes) // Map /api/rentals to bookingRoutes
 
 // Handle SPA routing or just serve index for other routes
-app.get('/*', (req, res) => {
+app.get('(.*)', (req, res) => {
     if (!req.path.startsWith('/api')) {
         res.sendFile(path.join(__dirname, '../frontend/index.html'))
     }
