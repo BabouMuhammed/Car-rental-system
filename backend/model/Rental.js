@@ -22,7 +22,7 @@ const rentalsSchema= new mongoose.Schema({
         type:Number,
         required:true
     },
-     rental_satatus:{
+     rental_status:{
         type:String,
         enum:['ACCEPTED','PENDING','REJECTED'],
         default:'PENDING',

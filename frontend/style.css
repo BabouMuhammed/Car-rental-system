@@ -1,5 +1,5 @@
 body{
-     font-family: "Roboto", sans-serif;
+     font-family: "Poppins", sans-serif;
   font-optical-sizing: auto;
     background-color: #ffff;
     margin: 0;
@@ -61,6 +61,12 @@ h2 span{
     padding: 15px;
     border-radius: 26px;
     z-index: 220;
+    gap: 1.5rem;
+}
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 nav a{
     margin: 0 15px;
@@ -545,52 +551,55 @@ label{
         border-radius: 0 0 26px 26px;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        transition: max-height 0.4s ease-out, opacity 0.3s ease;
         width: 100%;
         margin: 0;
+        z-index: 100;
+        opacity: 0;
+        display: flex;
     }
 
     .nav-links.active {
-        max-height: 300px;
+        max-height: 600px;
+        opacity: 1;
+        padding-bottom: 30px;
     }
 
     nav a {
         margin: 10px 0;
-        padding: 10px 0;
+        padding: 12px 0;
         border-right: none;
-        border-bottom: 1px solid rgba(75, 73, 73, 0.555);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         display: block;
+        font-size: 1.1rem;
+        width: 100%;
+        text-align: center;
+        color: white;
     }
 
     nav a:last-child {
         border-bottom: none;
     }
 
+    .btn-group {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 20px;
+        gap: 10px;
+    }
+
     .btn {
-        display: none;
-    }
-
-    .nav-links {
-        padding-bottom: 30px;
-    }
-
-    .nav-links.active {
-        position: relative;
-    }
-
-    .nav-links.active::after {
-        content: 'Book now';
-        display: block;
-        background-color: white;
-        color: black;
-        padding: 10px 15px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: bold;
+        flex: 1;
+        min-width: 90px;
+        padding: 12px 5px;
+        font-size: 0.85rem;
         text-align: center;
-        margin-top: 15px;
-        font-size: 12px;
-        cursor: pointer;
+        box-sizing: border-box;
+        border-radius: 25px;
+        display: inline-block;
+        white-space: nowrap;
     }
 
     .top-section {

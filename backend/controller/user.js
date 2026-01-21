@@ -28,7 +28,10 @@ const registerUser= async (req,res)=>{
 
         
         const hashedPassword=await bcrypt.hash(password,10)
-        const user=new User(req.body)
+        
+        // Ensure role is set to CUSTOMER by default for new registrations
+        const userData = { ...req.body, role: 'CUSTOMER' };
+        const user=new User(userData)
         user.password=hashedPassword;
         await user.save()
         res.status(201).json({
@@ -64,12 +67,17 @@ const loginUser= async (req,res)=>{
                 }
             )
         }
-        const token=await generateToken(email)
+        const token=await generateToken(userExist._id)
+
+        // Remove password from user object
+        const user = userExist.toObject();
+        delete user.password;
 
         return res.status(200).json(
             {
                 message:"login successful",
-                token:token
+                token:token,
+                user: user
             }
         )
             
@@ -82,5 +90,45 @@ const loginUser= async (req,res)=>{
 
     }
 }
-module.exports={loginUser,registerUser}
+
+const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const updateData = { ...req.body };
+        // Prevent non-admins from changing roles
+        if (req.user.role !== 'ADMIN') {
+            delete updateData.role;
+        }
+        
+        const user = await User.findByIdAndUpdate(req.params.id, updateData, { new: true }).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports={loginUser,registerUser,getUserById,updateUser,getAllUsers}
 

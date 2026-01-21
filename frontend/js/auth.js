@@ -29,7 +29,7 @@
 
       // Disable button during submission
       loginBtn.disabled = true;
-      loginBtn.textContent = 'Signing in...';
+      loginBtn.innerHTML = '<div class="btn-content"><div class="loader"></div> <span>Signing in...</span></div>';
 
       try {
         const response = await AuthAPI.login({
@@ -37,9 +37,9 @@
           password,
         });
 
-        // Show dashboard button
-        updateAuthUI();
-
+        // Show success and redirect
+        loginBtn.innerHTML = 'Success!';
+        
         // Success - redirect to dashboard or home
         setTimeout(() => {
           window.location.href = './dashboard.html';
@@ -73,8 +73,6 @@
       const phone = document.getElementById('phone').value.trim();
       const password = document.getElementById('signup-password').value.trim();
       const confirmPassword = document.getElementById('confirm-password').value.trim();
-      const dob = document.getElementById('dob').value.trim();
-      const terms = document.querySelector('input[name="terms"]').checked;
       const errorDiv = document.getElementById('errorMessage');
       const signupBtn = document.getElementById('signupBtn');
 
@@ -83,13 +81,8 @@
       errorDiv.textContent = '';
 
       // Validate inputs
-      if (!firstName || !lastName || !email || !phone || !password || !confirmPassword || !dob) {
+      if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
         showError(errorDiv, 'Please fill in all fields');
-        return;
-      }
-
-      if (!terms) {
-        showError(errorDiv, 'You must agree to the Terms of Service');
         return;
       }
 
@@ -105,17 +98,18 @@
 
       // Disable button during submission
       signupBtn.disabled = true;
-      signupBtn.textContent = 'Creating Account...';
+      signupBtn.innerHTML = '<div class="btn-content"><div class="loader"></div> <span>Creating Account...</span></div>';
 
       try {
         const response = await AuthAPI.register({
           name: `${firstName} ${lastName}`,
           email,
           phone,
-          passsword: password, // Note: backend has typo 'passsword'
+          password: password,
         });
 
         // Success - show message and redirect to login
+        signupBtn.innerHTML = 'Account Created!';
         showSuccess(errorDiv, 'Account created successfully! Redirecting to login...');
         
         setTimeout(() => {

@@ -31,7 +31,12 @@ const createRental= async (req,res)=>{
 
 const getAllRentals= async (req,res)=>{
     try{
-        const rentals=await Rental.find()
+        let rentals;
+        if (req.user.role === 'ADMIN') {
+            rentals=await Rental.find().populate('user_id').populate('car_id')
+        } else {
+            rentals=await Rental.find({user_id: req.user._id}).populate('car_id')
+        }
         res.status(200).json(rentals)
     }catch(error){
         res.status(400).json(error)

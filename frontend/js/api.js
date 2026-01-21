@@ -3,7 +3,10 @@
  * Handles all API calls to the backend
  */
 
-const API_BASE_URL = 'https://car-rental-system-backend-qj67.onrender.com';
+// Detect if we are running locally or on a deployed server
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
+  : '/api';
 
 /**
  * Helper function to make API requests
@@ -204,6 +207,24 @@ const RentalAPI = {
     return apiRequest(`/rentals/${rentalId}`, {
       method: 'PUT',
       body: JSON.stringify(rentalData),
+    });
+  },
+
+  /**
+   * Accept rental (Admin only)
+   */
+  accept: async (rentalId) => {
+    return apiRequest(`/rentals/accept/${rentalId}`, {
+      method: 'PUT',
+    });
+  },
+
+  /**
+   * Reject rental (Admin only)
+   */
+  reject: async (rentalId) => {
+    return apiRequest(`/rentals/reject/${rentalId}`, {
+      method: 'PUT',
     });
   },
 

@@ -1,5 +1,6 @@
 const express=require('express')
 const cors=require('cors')
+const path=require('path')
 const carRoutes=require('./routes/car')
 const userRoutes=require('./routes/user')
 const bookingRoutes=require('./routes/rental')
@@ -18,9 +19,22 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(express.json())
+
+// Serve static files from the frontend directory
+app.use(express.static(path.join(__dirname, '../frontend')))
+
 app.use('/api/cars',carRoutes)
-app.use('/api/users',userRoutes)
-app.use('/api/bookings',bookingRoutes)
+app.use('/api/auth',userRoutes) // Map /api/auth to userRoutes for login/register
+app.use('/api/users',userRoutes) // Map /api/users to userRoutes for profile
+app.use('/api/rentals',bookingRoutes) // Map /api/rentals to bookingRoutes
+
+// Handle SPA routing or just serve index for other routes
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, '../frontend/index.html'))
+    }
+})
+
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
 })

@@ -5,11 +5,37 @@
  */
 (function () {
   function initDashboardTabs() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      window.location.href = './login.html';
+      return;
+    }
+
     const topbar = document.querySelector(".topbar");
     if (!topbar) return;
 
+    // Update Topbar based on role
+    const titleSpan = topbar.querySelector("h2");
+    if (titleSpan) {
+      titleSpan.innerHTML = user.role === 'ADMIN' ? '<span>Rent</span>ify Admin' : '<span>Rent</span>ify Portal';
+    }
+
     const nav = topbar.querySelector("nav");
     if (!nav) return;
+
+    // Hide admin-only tabs for customers
+    if (user.role !== 'ADMIN') {
+      const adminTabs = nav.querySelectorAll('a[data-tab="cars"], a[data-tab="customers"]');
+      adminTabs.forEach(tab => tab.style.display = 'none');
+      
+      // Update stats headers for customers
+      const statTitles = document.querySelectorAll('.stat-card h3');
+      const statCards = document.querySelectorAll('.stat-card');
+      if (statTitles[0]) statTitles[0].textContent = 'Available Cars';
+      if (statTitles[1]) statTitles[1].textContent = 'My Bookings';
+      if (statTitles[2]) statTitles[2].textContent = 'Total Spent';
+      if (statCards[3]) statCards[3].style.display = 'none'; // Hide "Total Customers" card
+    }
 
     const links = Array.from(nav.querySelectorAll("a[data-tab]"));
     if (!links.length) return;
@@ -135,22 +161,86 @@
 
   async function loadDashboardStats() {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
       const cars = await CarAPI.getAll();
       const rentals = await RentalAPI.getAll();
       
-      // Update stat cards with real data
-      const availableCars = cars.filter(c => c.Status === 'AVAILABLE').length;
-      const totalBookings = rentals.length;
-      const ongoingRentals = rentals.filter(r => r.status === 'ONGOING').length;
+      const availableCars = cars.filter(c => c.Status === 'AVAILABLE' || c.Status === 'Available').length;
       
       // Update stat card values
       const statCards = document.querySelectorAll('.stat-card');
-      if (statCards[0]) statCards[0].querySelector('.stat-number').textContent = availableCars;
-      if (statCards[1]) statCards[1].querySelector('.stat-number').textContent = totalBookings;
-      if (statCards[2]) statCards[2].querySelector('.stat-number').textContent = ongoingRentals;
+      const statNumbers = document.querySelectorAll('.stat-number');
+
+      if (user.role === 'ADMIN') {
+        const totalBookings = rentals.length;
+        const ongoingRentals = rentals.filter(r => r.rental_status === 'ONGOING').length;
+        const totalCustomers = totalBookings; // Placeholder logic
+
+        if (statNumbers[0]) statNumbers[0].textContent = availableCars;
+        if (statNumbers[1]) statNumbers[1].textContent = totalBookings;
+        if (statNumbers[2]) statNumbers[2].textContent = ongoingRentals;
+        if (statNumbers[3]) statNumbers[3].textContent = totalCustomers; 
+      } else {
+        // Customer specific stats
+        const myBookings = rentals.length;
+        const totalSpent = rentals.reduce((acc, r) => acc + (r.total_price || 0), 0);
+
+        if (statNumbers[0]) statNumbers[0].textContent = availableCars;
+        if (statNumbers[1]) statNumbers[1].textContent = myBookings;
+        if (statNumbers[2]) statNumbers[2].textContent = `$${totalSpent}`;
+      }
+
+      // Load latest bookings into the dashboard table
+      loadLatestBookings(rentals, user.role);
       
     } catch (error) {
       console.error('Error loading dashboard stats:', error);
+    }
+  }
+
+  function loadLatestBookings(rentals, role) {
+    const tbody = document.querySelector('.dashboard .panel.full-width table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+    
+    // Show last 5 bookings
+    const latest = rentals.slice(-5).reverse();
+
+    latest.forEach(rental => {
+      const row = document.createElement('tr');
+      const statusClass = (rental.rental_status || 'PENDING').toLowerCase();
+      
+      row.innerHTML = `
+        <td>${role === 'ADMIN' ? (rental.user_id?.name || 'User') : 'Me'}</td>
+        <td>${rental.car_id ? `${rental.car_id.brand} ${rental.car_id.model}` : 'Unknown Car'}</td>
+        <td>${new Date(rental.start_date).toLocaleDateString()} - ${new Date(rental.end_date).toLocaleDateString()}</td>
+        <td>$${rental.total_price || 0}</td>
+        <td><span class="badge ${statusClass}">${rental.rental_status || 'PENDING'}</span></td>
+        <td>
+          ${role === 'ADMIN' && rental.rental_status === 'PENDING' ? 
+            `<button class="action-btn accept" onclick="handleRentalStatus('${rental._id}', 'accept')">Accept</button>
+             <button class="action-btn reject" onclick="handleRentalStatus('${rental._id}', 'reject')">Reject</button>` : 
+            `<button class="action-btn view">View</button>`
+          }
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Global handler for rental status (for admin)
+  window.handleRentalStatus = async (id, action) => {
+    try {
+      if (action === 'accept') {
+        await RentalAPI.accept(id);
+      } else {
+        await RentalAPI.reject(id);
+      }
+      loadTabData('dashboard');
+      loadTabData('bookings');
+    } catch (error) {
+      alert('Error updating rental: ' + error.message);
     }
   }
 
@@ -165,14 +255,12 @@
       
       cars.forEach(car => {
         const row = document.createElement('tr');
-        const statusClass = car.Status === 'AVAILABLE' ? 'available' : 
-                           car.Status === 'RENTED' ? 'rented' : 'maintenance';
+        const statusClass = (car.Status || 'AVAILABLE').toLowerCase();
         
         row.innerHTML = `
           <td>${car.brand} ${car.model}</td>
           <td>${car.fuel_type || 'N/A'}</td>
-          <td>${car.license_plate || 'N/A'}</td>
-          <td>${new Date().getFullYear()}</td>
+          <td>${car.seating_capacity || 'N/A'} Seats</td>
           <td>$${car.price_per_day || 0}</td>
           <td><span class="badge ${statusClass}">${car.Status || 'AVAILABLE'}</span></td>
           <td>
@@ -190,6 +278,7 @@
 
   async function loadBookingsData() {
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
       const rentals = await RentalAPI.getAll();
       const tbody = document.querySelector('#bookings-tab table tbody');
       
@@ -199,19 +288,24 @@
       
       rentals.forEach((rental, index) => {
         const row = document.createElement('tr');
-        const statusClass = rental.status === 'ONGOING' ? 'ongoing' : 
-                           rental.status === 'COMPLETED' ? 'completed' : 'upcoming';
+        const statusClass = (rental.rental_status || 'PENDING').toLowerCase();
         
         row.innerHTML = `
           <td>#BK${String(index + 1).padStart(3, '0')}</td>
-          <td>${rental.user_id?.name || 'Unknown'}</td>
-          <td>${rental.car_id?.brand || 'Unknown'} ${rental.car_id?.model || ''}</td>
+          <td>${user.role === 'ADMIN' ? (rental.user_id?.name || 'Unknown User') : 'Me'}</td>
+          <td>${rental.car_id ? `${rental.car_id.brand} ${rental.car_id.model}` : 'Unknown Car'}</td>
           <td>${new Date(rental.start_date).toLocaleDateString()}</td>
           <td>${new Date(rental.end_date).toLocaleDateString()}</td>
           <td>${Math.ceil((new Date(rental.end_date) - new Date(rental.start_date)) / (1000 * 60 * 60 * 24))}</td>
           <td>$${rental.total_price || 0}</td>
-          <td><span class="badge ${statusClass}">${rental.status || 'UPCOMING'}</span></td>
-          <td><button class="action-btn edit" data-rental-id="${rental._id}">Manage</button></td>
+          <td><span class="badge ${statusClass}">${rental.rental_status || 'PENDING'}</span></td>
+          <td>
+            ${user.role === 'ADMIN' && rental.rental_status === 'PENDING' ? 
+              `<button class="action-btn accept" onclick="handleRentalStatus('${rental._id}', 'accept')">Accept</button>
+               <button class="action-btn reject" onclick="handleRentalStatus('${rental._id}', 'reject')">Reject</button>` : 
+              `<button class="action-btn view">View Details</button>`
+            }
+          </td>
         `;
         tbody.appendChild(row);
       });
@@ -223,13 +317,27 @@
 
   async function loadCustomersData() {
     try {
-      // Note: Fetch users from backend (may need additional endpoint)
+      const users = await UserAPI.getAll();
       const tbody = document.querySelector('#customers-tab table tbody');
       
       if (!tbody) return;
       
-      // TODO: Implement user fetching from backend
-      console.log('Customers data loading not yet implemented');
+      tbody.innerHTML = '';
+      
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>#C${user._id.substring(0, 4)}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.phone || 'N/A'}</td>
+          <td>${user.role}</td>
+          <td>${new Date(user.createdAt || Date.now()).toLocaleDateString()}</td>
+          <td><span class="badge active">Active</span></td>
+          <td><button class="action-btn view">View Profile</button></td>
+        `;
+        tbody.appendChild(row);
+      });
       
     } catch (error) {
       console.error('Error loading customers data:', error);
