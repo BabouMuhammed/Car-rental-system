@@ -40,62 +40,89 @@
             </nav>
         </div>
     </header>
-
-    <main class="container">
-
-        <h1><span>Rent</span>ify</h1>
-
-        <div class="content">
-
+<main class="container">
+    <div class="booking-wrapper">
+        <div class="car-display-section">
+            <div class="car-header">
+                <span class="status-tag">Available Now</span>
+                <h1 class="car-title"><span>Rent</span>ify Premium</h1>
+            </div>
+            
             <div class="car-card">
                 <div class="image-frame">
                     <img id="carImage" src="" alt="Selected car">
                 </div>
             </div>
 
-            <div class="booking-card">
-                <h2 id="carPrice">Select a car <span>PER DAY</span></h2>
-
-                <form id="rentalForm">
-                    <div id="successMessage" class="success-message" style="display: none;"></div>
-                    <div id="errorMessage" class="error-message" style="display: none;"></div>
-
-                    <input type="hidden" id="car_id" name="car_id">
-                    <input type="hidden" id="price_per_day" name="price_per_day">
-                    <input type="hidden" id="total_price" name="total_price">
-
-                    <label>Pickup date</label>
-                    <input type="date" id="start_date" name="start_date" required>
-
-                    <label>Return date</label>
-                    <input type="date" id="end_date" name="end_date" required>
-
-                    <label>Pickup time</label>
-                    <input type="time" id="pickup_time" name="pickup_time" required>
-
-                    <label>Full Name</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" readonly>
-
-                    <label>Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" readonly>
-
-                    <label>Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" readonly>
-
-                    <label>Special Requests (Optional)</label>
-                    <textarea id="comments" name="comments" rows="3" placeholder="Any special requests?"></textarea>
-
-                    <div class="total">
-                        Total Cost: <strong id="totalCost">$0</strong>
-                    </div>
-
-                    <button type="submit" id="confirmBtn" class="booking-btn">Confirm Booking</button>
-                </form>
+            <div class="car-features">
+                <div class="feature"><i class="icon">✓</i> Best Price Guaranteed</div>
+                <div class="feature"><i class="icon">✓</i> 24/7 Roadside Support</div>
+                <div class="feature"><i class="icon">✓</i> Free Cancellation</div>
             </div>
-
         </div>
 
-    </main>
+        <div class="booking-card">
+            <div class="price-tag">
+                <h2 id="carPrice">Select a car</h2>
+            </div>
+
+            <form id="rentalForm">
+                <div id="successMessage" class="success-message" style="display: none;"></div>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <input type="hidden" id="car_id" name="car_id">
+                <input type="hidden" id="price_per_day" name="price_per_day">
+                <input type="hidden" id="total_price" name="total_price">
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Pickup Date</label>
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Return Date</label>
+                        <input type="date" id="end_date" name="end_date" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Pickup Time</label>
+                    <input type="time" id="pickup_time" name="pickup_time" required>
+                </div>
+
+                <div class="form-divider">Personal Details</div>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" readonly>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Phone" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Email" readonly>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Special Requests</label>
+                    <textarea id="comments" name="comments" rows="2" placeholder="Any special requests?"></textarea>
+                </div>
+
+                <div class="total-box">
+                    <span>Estimated Total</span>
+                    <strong id="totalCost">$0</strong>
+                </div>
+
+                <button type="submit" id="confirmBtn" class="booking-btn">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>
