@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Rental Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -20,16 +20,26 @@
     <header class="header">
         <div class="intro">
             <h2><span>Rent</span>ify</h2>
-            <nav class="nav-links" id="navLinks">
-                <a class="active" data-tab="dashboard" href="#dashboard">Dashboard</a>
-                <a data-tab="cars" href="#cars">Manage Cars</a>
-                <a data-tab="bookings" href="#bookings">Bookings</a>
-                <a data-tab="customers" href="#customers">Customers</a>
-                <a href="../index.html">Home</a>
-            </nav>
-            <div class="btn-group">
-                <span class="admin-info" style="color: white; margin-right: 15px;"><span class="user-icon">👤</span> <span id="userRoleName">Admin</span></span>
-                <button class="btn logout-btn" id="logoutBtn">Logout</button>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-container" id="navContainer">
+                <div class="mobile-menu-header">
+                    <h2><span>Rent</span>ify</h2>
+                </div>
+                <nav class="nav-links" id="navLinks">
+                    <a class="active" data-tab="dashboard" href="#dashboard">Dashboard</a>
+                    <a data-tab="cars" href="#cars">Manage Cars</a>
+                    <a data-tab="bookings" href="#bookings">Bookings</a>
+                    <a data-tab="customers" href="#customers">Customers</a>
+                    <a href="../index.html">Home</a>
+                </nav>
+                <div class="btn-group">
+                    <span class="admin-info" style="color: white; margin-right: 15px;"><span class="user-icon">👤</span> <span id="userRoleName">Admin</span></span>
+                    <button class="btn logout-btn" id="logoutBtn">Logout</button>
+                </div>
             </div>
         </div>
     </header>
@@ -107,21 +117,23 @@
                 <h3>Latest Bookings</h3>
                 <a href="#bookings" class="view-all">View All →</a>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Customer</th>
-                        <th>Car</th>
-                        <th>Period</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loaded dynamically from backend -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Car</th>
+                            <th>Period</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loaded dynamically from backend -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 
@@ -132,21 +144,23 @@
                 <h3>Manage Fleet</h3>
                 <button class="add-btn">+ Add New Car</button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Car</th>
-                        <th>Fuel</th>
-                        <th>Seats</th>
-                        <th>Daily Rate</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loaded dynamically from backend -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Car</th>
+                            <th>Fuel</th>
+                            <th>Seats</th>
+                            <th>Daily Rate</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loaded dynamically from backend -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 
@@ -175,26 +189,27 @@
         <section class="panel full-width">
             <div class="section-header">
                 <h3>All Bookings</h3>
-                <span class="booking-count">Total: —</span>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Customer</th>
-                        <th>Car</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Total Days</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loaded dynamically from backend -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Car</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Days</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loaded dynamically from backend -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 
@@ -216,25 +231,26 @@
         <section class="panel full-width">
             <div class="section-header">
                 <h3>Customer Directory</h3>
-                <span class="customer-count">Total: —</span>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Customer ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Member Since</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loaded dynamically from backend -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Member Since</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loaded dynamically from backend -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 

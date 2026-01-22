@@ -229,6 +229,34 @@
     const header = document.querySelector(".header");
     if (!header) return;
 
+    // Responsive Menu Toggle logic
+    const menuToggle = document.getElementById('menuToggle');
+    const navContainer = document.getElementById('navContainer');
+    
+    if (menuToggle && navContainer) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navContainer.classList.toggle('active');
+      });
+
+      // Close menu when a link is clicked
+      const navLinks = navContainer.querySelectorAll('a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navContainer.classList.remove('active');
+        });
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!navContainer.contains(e.target) && !menuToggle.contains(e.target) && navContainer.classList.contains('active')) {
+          menuToggle.classList.remove('active');
+          navContainer.classList.remove('active');
+        }
+      });
+    }
+
     // Update Topbar based on role
     const titleSpan = header.querySelector("h2");
     if (titleSpan) {
