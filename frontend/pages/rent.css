@@ -64,127 +64,191 @@ body {
     color: #555;
 }
 
-
+/* Container & Layout */
 .container {
-    width: min(1100px, 100%);
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 120px 20px 80px; /* more bottom space for clarity */
+    padding: 120px 20px 60px;
 }
 
-h1 {
-    margin-bottom: 30px;
+.page-title {
+    margin-bottom: 40px;
 }
 
+.page-title h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.page-title h1 span {
+    color: #1e88e5;
+}
+
+.page-title p {
+    color: #888;
+    margin-top: 5px;
+}
 
 .content {
     display: grid;
-    grid-template-columns: 4fr 2fr; /* give main image more room */
-    gap: 36px; /* more breathing room */
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: start;
 }
 
-
+/* Car Card Styling */
 .car-card {
-    background: #111317; /* slightly darker to improve contrast */
-    border-radius: 12px;
-    padding: 20px; /* tighter padding when using frame */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    background: #1a1d24;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Image frame keeps aspect ratio and centers the image without cropping */
 .image-frame {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 8px;
-}
-
-.image-frame img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* show the whole car */
-    display: block;
-    border-radius: 6px;
-    background: transparent;
-}
-
-
-.booking-card {
-    background: #1a1d24;
-    border-radius: 10px;
-    padding: 25px;
-}
-
-.booking-card h2 {
+    background: radial-gradient(circle, #2a2e35 0%, #111317 100%);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
-.booking-card h2 span {
-    font-size: 14px;
-    color: #aaa;
+.car-details-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.booking-card label {
+.badge {
+    background: rgba(30, 136, 229, 0.15);
+    color: #1e88e5;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.car-details-footer p {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Booking Form Styling */
+.booking-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    color: #1a1d24;
+}
+
+.price-header h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #000;
+}
+
+.price-header h2 span {
+    font-size: 16px;
+    color: #777;
+    font-weight: 400;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
     display: block;
-    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.booking-card input, 
+.booking-card textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    color: #333;
     font-size: 14px;
-    color: #ccc;
+    transition: all 0.3s ease;
 }
 
-.booking-card input,
-.booking-card select,
-.booking-card textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: none;
-    background: #0f1115;
-    color: #fff;
+.booking-card input:focus {
+    border-color: #1e88e5;
+    outline: none;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.1);
 }
 
-.booking-card textarea {
-    resize: none;
-}
-
-
-.total {
+.divider {
+    height: 1px;
+    background: #eee;
     margin: 20px 0;
-    font-size: 16px;
 }
 
+/* Summary Section */
+.total-summary {
+    background: #f1f3f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-.booking-card button {
+.total-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.total-amount {
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e88e5;
+}
+
+/* Button Styling */
+.booking-btn {
     width: 100%;
-    padding: 12px;
+    padding: 16px;
     background: #1e88e5;
-    border: none;
     color: #fff;
+    border: none;
+    border-radius: 12px;
     font-size: 16px;
-    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
 }
 
-.booking-card button:hover {
+.booking-btn:hover {
     background: #1565c0;
+    transform: translateY(-2px);
 }
 
-@media (max-width: 900px) {
+.booking-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
     .content {
         grid-template-columns: 1fr;
     }
-
-    .image-frame {
-        aspect-ratio: 4 / 3; /* slightly taller on smaller screens */
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding-top: 140px;
+    
+    .car-card {
+        order: -1; /* Keep car image on top on mobile */
     }
 }
